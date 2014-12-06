@@ -1,32 +1,25 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author Renz
- */
 public class Calculations {
 
-    //Declarations for Regula Falsi
+    //Declarations for Regula Falsi and Bisection
     private ArrayList<Double> x0 = new ArrayList<>();
     private ArrayList<Double> x1 = new ArrayList<>();
     private ArrayList<Double> x2 = new ArrayList<>();
-    private ArrayList<Double> regulaError = new ArrayList<>();
     private ArrayList<Double> y0 = new ArrayList<>();
     private ArrayList<Double> y1 = new ArrayList<>();
     private ArrayList<Double> y2 = new ArrayList<>();
+    private ArrayList<Double> regulaError = new ArrayList<>();
+    private ArrayList<Double> bisectionError = new ArrayList<>();
     private ArrayList<Double> roots = new ArrayList<>();
     //Declarations for Secant Method
     private ArrayList<Double> xValues = new ArrayList<>();
     private ArrayList<Double> yValues = new ArrayList<>();
     private ArrayList<Double> secantError = new ArrayList<>();
-    private ArrayList<Double> bisectionError = new ArrayList<>();
-
+	
+	//Regula Falsi
     public void solveRegula(ArrayList<Double> polynomial, ArrayList<Double> interval, double stopVal, String type) {
         clearRegula();
 
@@ -101,6 +94,7 @@ public class Calculations {
         }
     }
 
+	//Secant
     public double fOfX(ArrayList<Double> polynomial, double x) {
         int i = 0;
         double answer = 0.0;
@@ -111,7 +105,7 @@ public class Calculations {
 
         return answer;
     }
-
+	
     public void solveSecant(ArrayList<Double> polynomial, ArrayList<Double> points, double stopVal, String type) {
         clearSecant();
 
@@ -187,27 +181,28 @@ public class Calculations {
                         bisectionError.add(Math.abs(error));
                     }
                     
-                    if(i != stopVal){
-                        if((y2.get(i) < 0 && y0.get(i) < 0) || (y2.get(i) >= 0 && y0.get(i) >= 0)){
-                            x0.add(x2.get(i));
-                            y0.add(y2.get(i));
-                            x1.add(x1.get(i));
-                            y1.add(y1.get(i));
-                        }
-                        else if((y2.get(i) < 0 && y1.get(i) < 0) || (y2.get(i) >= 0 && y1.get(i) >= 0)){
-                            x1.add(x2.get(i));
-                            y1.add(y2.get(i));
-                            x0.add(x1.get(i));
-                            y0.add(y1.get(i));
-                        }
-                    
-                        roots.add(x2.get(i));
-                    }
+					if(y2.get(i) < 0 && y0.get(i) < 0){
+						x0.add(x2.get(i));
+						y0.add(y2.get(i));
+						x1.add(x1.get(i));
+						y1.add(y1.get(i));
+					}
+					else if(y2.get(i) < 0 && y1.get(i) < 0){
+						x0.add(x0.get(i));
+						y0.add(y0.get(i));
+						x1.add(x2.get(i));
+						y1.add(y2.get(i));
+					}
+					else if (y2.get(i) = 0){ //or (bn-an)/2 < error
+						i = stopVal;
+					}
+				
+					roots.add(x2.get(i));
                 }
                 break;
             case "TOL":
                 int i = 0;
-                while (!(Math.abs(x1.get(i) - x0.get(i)) <= stopVal)) {
+                while (!(Math.abs((x1.get(i) - x0.get(i)) / 2) <= stopVal)) {
                     y0.add(fOfX(polynomial, x0.get(i)));
                     y1.add(fOfX(polynomial, x1.get(i)));
 

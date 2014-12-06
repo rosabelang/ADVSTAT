@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import java.awt.BasicStroke;
@@ -17,10 +13,6 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeriesCollection;
 
-/**
- *
- * @author Renz
- */
 public class Graph extends javax.swing.JFrame {
 
     /**

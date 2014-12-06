@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.awt.event.ActionEvent;
@@ -15,10 +11,6 @@ import org.jfree.data.xy.XYSeries;
 import view.Graph;
 import view.MainMenu;
 
-/**
- *
- * @author Renz
- */
 public class Controller {
 
     MainMenu menuView;
