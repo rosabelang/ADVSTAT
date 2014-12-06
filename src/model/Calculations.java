@@ -11,15 +11,16 @@ public class Calculations {
     private ArrayList<Double> y0 = new ArrayList<>();
     private ArrayList<Double> y1 = new ArrayList<>();
     private ArrayList<Double> y2 = new ArrayList<>();
-    private ArrayList<Double> regulaError = new ArrayList<>();
-    private ArrayList<Double> bisectionError = new ArrayList<>();
     private ArrayList<Double> roots = new ArrayList<>();
     //Declarations for Secant Method
     private ArrayList<Double> xValues = new ArrayList<>();
     private ArrayList<Double> yValues = new ArrayList<>();
+	//Declarations for Errors
+    private ArrayList<Double> regulaError = new ArrayList<>();
+    private ArrayList<Double> bisectionError = new ArrayList<>();
     private ArrayList<Double> secantError = new ArrayList<>();
-	
-	//Regula Falsi
+    private ArrayList<Double> newtonsError = new ArrayList<>();
+
     public void solveRegula(ArrayList<Double> polynomial, ArrayList<Double> interval, double stopVal, String type) {
         clearRegula();
 
@@ -180,7 +181,7 @@ public class Calculations {
                         double error = (x1.get(i) - x0.get(i)) / 2;
                         bisectionError.add(Math.abs(error));
                     }
-                    
+
 					if(y2.get(i) < 0 && y0.get(i) < 0){
 						x0.add(x2.get(i));
 						y0.add(y2.get(i));
@@ -198,6 +199,7 @@ public class Calculations {
 					}
 				
 					roots.add(x2.get(i));
+
                 }
                 break;
             case "TOL":
@@ -238,6 +240,61 @@ public class Calculations {
                 break;
         }
     }
+    
+    public void solveNewtons(ArrayList<Double> polynomial, ArrayList<Double> points, double stopVal, String type) {
+        clearNewtons();
+
+        //initialize points to be used
+        /*xValues.add(points.get(0));
+        xValues.add(points.get(1));
+        yValues.add(fOfX(polynomial, xValues.get(0)));
+        yValues.add(fOfX(polynomial, xValues.get(1)));
+        
+        double nextPoint = 0.0;*/
+        switch (type) {
+            case "Iteration":
+              /*  for (int i = 1; i < stopVal + 1; i++) {
+                    nextPoint = xValues.get(i) - ((fOfX(polynomial, xValues.get(i)) * (xValues.get(i - 1) - xValues.get(i))) / (fOfX(polynomial, xValues.get(i - 1)) - fOfX(polynomial, xValues.get(i))));
+                    xValues.add(nextPoint);
+                    yValues.add(fOfX(polynomial, xValues.get(i + 1)));
+                    if (i == 1) {
+                        newtonsError.add(0.0);
+                        newtonsError.add(0.0);
+                    } else {
+                        double error = (xValues.get(i + 1) - xValues.get(i)) / xValues.get(i + 1);
+                        newtonsError.add(Math.abs(error));
+                    }
+                }*/
+                for(int i = 1; i < stopVal + 1; i++){
+                    xValues.add(1.5);
+                    yValues.add(2.3);
+                    newtonsError.add(0.0);
+                }
+                break;
+            case "TOL":
+                /*int i = 1;
+                while (!(Math.abs(xValues.get(i) - xValues.get(i - 1)) <= stopVal)) {
+                    nextPoint = xValues.get(i) - ((fOfX(polynomial, xValues.get(i)) * (xValues.get(i - 1) - xValues.get(i))) / (fOfX(polynomial, xValues.get(i - 1)) - fOfX(polynomial, xValues.get(i))));
+                    xValues.add(nextPoint);
+                    yValues.add(fOfX(polynomial, xValues.get(i + 1)));
+                    if (i == 1) {
+                        newtonsError.add(0.0);
+                        newtonsError.add(0.0);
+                    } else {
+                        double error = (xValues.get(i + 1) - xValues.get(i)) / xValues.get(i + 1);
+                        newtonsError.add(Math.abs(error));
+                    }
+                    i++;
+                }*/
+                for(int i = 1; i < stopVal + 1; i++){
+                    xValues.add(1.5);
+                    yValues.add(2.3);
+                    newtonsError.add(0.0);
+                }
+                break;
+
+        }
+    }
 
     public void clearRegula() {
         x0.clear();
@@ -265,6 +322,12 @@ public class Calculations {
         y2.clear();
         bisectionError.clear();
         roots.clear();
+    }
+    
+    public void clearNewtons() {
+        xValues.clear();
+        yValues.clear();
+        newtonsError.clear();
     }
 
     public ArrayList<Double> getX0() {
@@ -313,5 +376,9 @@ public class Calculations {
     
     public ArrayList<Double> getBisectionError() {
         return bisectionError;
+    }
+    
+    public ArrayList<Double> getNewtonsError() {
+        return newtonsError;
     }
 }
