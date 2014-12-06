@@ -20,82 +20,7 @@ public class Calculations {
     private ArrayList<Double> bisectionError = new ArrayList<>();
     private ArrayList<Double> secantError = new ArrayList<>();
     private ArrayList<Double> newtonsError = new ArrayList<>();
-
-    public void solveRegula(ArrayList<Double> polynomial, ArrayList<Double> interval, double stopVal, String type) {
-        clearRegula();
-
-        //initialize intervals to be used
-        x0.add(interval.get(0));
-        x1.add(interval.get(1));
-        //add roots for plotting, arrangement does not matter. Graph auto arranges.
-        roots.add(interval.get(0));
-        roots.add(interval.get(1));
-        switch (type) {
-            case "Iteration":
-                for (int i = 0; i < stopVal; i++) {
-                    y0.add(fOfX(polynomial, x0.get(i)));
-                    y1.add(fOfX(polynomial, x1.get(i)));
-
-                    x2.add(((x0.get(i) * y1.get(i)) - (x1.get(i) * y0.get(i))) / (y1.get(i) - y0.get(i)));
-                    y2.add(fOfX(polynomial, x2.get(i)));
-
-                    //First error is automatic NaN.
-                    if (i == 0) {
-                        regulaError.add(0.0);
-                    } else {
-                        double error = (x2.get(i - 1) - x2.get(i)) / x2.get(i);
-                        regulaError.add(Math.abs(error));
-                    }
-
-                    if (y2.get(i) == 0) {
-                        break;
-                    }
-
-                    if ((y1.get(i) * y2.get(i)) < 0) {
-                        x0.add(x2.get(i));
-                        x1.add(x1.get(i));
-                    } else {
-                        x0.add(x0.get(i));
-                        x1.add(x2.get(i));
-                    }
-
-                    roots.add(x2.get(i));
-                }
-                break;
-            case "TOL":
-                int i = 0;
-                while (!(Math.abs(x1.get(i) - x0.get(i)) <= stopVal)) {
-                    y0.add(fOfX(polynomial, x0.get(i)));
-                    y1.add(fOfX(polynomial, x1.get(i)));
-
-                    x2.add(((x0.get(i) * y1.get(i)) - (x1.get(i) * y0.get(i))) / (y1.get(i) - y0.get(i)));
-                    y2.add(fOfX(polynomial, x2.get(i)));
-                    if (i == 0) {
-                        regulaError.add(0.0);
-                    } else {
-                        double error = (x2.get(i - 1) - x2.get(i)) / x2.get(i);
-                        regulaError.add(Math.abs(error));
-                    }
-
-                    if (y2.get(i) == 0) {
-                        break;
-                    }
-
-                    if ((y1.get(i) * y2.get(i)) < 0) {
-                        x0.add(x2.get(i));
-                        x1.add(x1.get(i));
-                    } else {
-                        x0.add(x0.get(i));
-                        x1.add(x2.get(i));
-                    }
-                    roots.add(x2.get(i));
-                    i++;
-                }
-                break;
-        }
-    }
-
-	//Secant
+    
     public double fOfX(ArrayList<Double> polynomial, double x) {
         int i = 0;
         double answer = 0.0;
@@ -107,52 +32,6 @@ public class Calculations {
         return answer;
     }
 	
-    public void solveSecant(ArrayList<Double> polynomial, ArrayList<Double> points, double stopVal, String type) {
-        clearSecant();
-
-        //initialize points to be used
-        xValues.add(points.get(0));
-        xValues.add(points.get(1));
-        yValues.add(fOfX(polynomial, xValues.get(0)));
-        yValues.add(fOfX(polynomial, xValues.get(1)));
-
-        double nextPoint = 0.0;
-        switch (type) {
-            case "Iteration":
-                for (int i = 1; i < stopVal + 1; i++) {
-                    nextPoint = xValues.get(i) - ((fOfX(polynomial, xValues.get(i)) * (xValues.get(i - 1) - xValues.get(i))) / (fOfX(polynomial, xValues.get(i - 1)) - fOfX(polynomial, xValues.get(i))));
-                    xValues.add(nextPoint);
-                    yValues.add(fOfX(polynomial, xValues.get(i + 1)));
-                    if (i == 1) {
-                        secantError.add(0.0);
-                        secantError.add(0.0);
-                    } else {
-                        double error = (xValues.get(i + 1) - xValues.get(i)) / xValues.get(i + 1);
-                        secantError.add(Math.abs(error));
-                    }
-                }
-                break;
-            case "TOL":
-                int i = 1;
-                while (!(Math.abs(xValues.get(i) - xValues.get(i - 1)) <= stopVal)) {
-                    nextPoint = xValues.get(i) - ((fOfX(polynomial, xValues.get(i)) * (xValues.get(i - 1) - xValues.get(i))) / (fOfX(polynomial, xValues.get(i - 1)) - fOfX(polynomial, xValues.get(i))));
-                    xValues.add(nextPoint);
-                    yValues.add(fOfX(polynomial, xValues.get(i + 1)));
-                    if (i == 1) {
-                        secantError.add(0.0);
-                        secantError.add(0.0);
-                    } else {
-                        double error = (xValues.get(i + 1) - xValues.get(i)) / xValues.get(i + 1);
-                        secantError.add(Math.abs(error));
-                    }
-                    i++;
-                }
-
-                break;
-
-        }
-    }
-    
     //Bisection Method
     public void solveBisection(ArrayList<Double> polynomial, ArrayList<Double> interval, double stopVal, String type) {
         clearBisection();
@@ -182,20 +61,20 @@ public class Calculations {
                         bisectionError.add(Math.abs(error));
                     }
 
-					if(y2.get(i) < 0 && y0.get(i) < 0){
+					if(y2.get(i) < 0 && y0.get(i) < 0 || y2.get(i) > 0 && y0.get(i) > 0){
 						x0.add(x2.get(i));
 						y0.add(y2.get(i));
 						x1.add(x1.get(i));
 						y1.add(y1.get(i));
 					}
-					else if(y2.get(i) < 0 && y1.get(i) < 0){
+					else if(y2.get(i) < 0 && y1.get(i) < 0 || y2.get(i) > 0 && y1.get(i) > 0){
 						x0.add(x0.get(i));
 						y0.add(y0.get(i));
 						x1.add(x2.get(i));
 						y1.add(y2.get(i));
 					}
-					else if (y2.get(i) = 0){
-						i = stopVal;
+					else if (y2.get(i) == 0){
+						i = (int) stopVal + 1;
 					}
 				
 					roots.add(x2.get(i));
@@ -204,7 +83,7 @@ public class Calculations {
                 break;
             case "TOL":
                 int i = 0;
-                while (!(Math.abs(x1.get(i) - x0.get(i)) / 2) <= stopVal)) {
+                while (Math.abs(x1.get(i) - x0.get(i)) / 2) > stopVal) {
                     y0.add(fOfX(polynomial, x0.get(i)));
                     y1.add(fOfX(polynomial, x1.get(i)));
 
@@ -218,19 +97,19 @@ public class Calculations {
                         bisectionError.add(Math.abs(error));
                     }
 
-                    if(y2.get(i) < 0 && y0.get(i) < 0){
+                    if(y2.get(i) < 0 && y0.get(i) < 0 || y2.get(i) > 0 && y0.get(i) > 0){
 						x0.add(x2.get(i));
 						y0.add(y2.get(i));
 						x1.add(x1.get(i));
 						y1.add(y1.get(i));
 					}
-					else if(y2.get(i) < 0 && y1.get(i) < 0){
+					else if(y2.get(i) < 0 && y1.get(i) < 0 || y2.get(i) > 0 && y1.get(i) > 0){
 						x0.add(x0.get(i));
 						y0.add(y0.get(i));
 						x1.add(x2.get(i));
 						y1.add(y2.get(i));
 					}
-					else if (y2.get(i) = 0){
+					else if (y2.get(i) == 0){
 						break;
 					}
 					
@@ -241,6 +120,7 @@ public class Calculations {
         }
     }
     
+	//Newton's
     public void solveNewtons(ArrayList<Double> polynomial, ArrayList<Double> points, double stopVal, String type) {
         clearNewtons();
 
@@ -291,6 +171,128 @@ public class Calculations {
                     yValues.add(2.3);
                     newtonsError.add(0.0);
                 }
+                break;
+
+        }
+    }
+	
+	//Regula Falsi
+    public void solveRegula(ArrayList<Double> polynomial, ArrayList<Double> interval, double stopVal, String type) {
+        clearRegula();
+
+        //initialize intervals to be used
+        x0.add(interval.get(0));
+        x1.add(interval.get(1));
+        //add roots for plotting, arrangement does not matter. Graph auto arranges.
+        roots.add(interval.get(0));
+        roots.add(interval.get(1));
+        switch (type) {
+            case "Iteration":
+                for (int i = 0; i < stopVal; i++) {
+                    y0.add(fOfX(polynomial, x0.get(i)));
+                    y1.add(fOfX(polynomial, x1.get(i)));
+
+                    x2.add(((x0.get(i) * y1.get(i)) - (x1.get(i) * y0.get(i))) / (y1.get(i) - y0.get(i)));
+                    y2.add(fOfX(polynomial, x2.get(i)));
+
+                    //First error is automatic NaN.
+                    if (i == 0) {
+                        regulaError.add(0.0);
+                    } else {
+                        double error = (x2.get(i - 1) - x2.get(i)) / x2.get(i);
+                        regulaError.add(Math.abs(error));
+                    }
+
+                    if (y2.get(i) == 0) {
+                        break;
+                    }
+
+                    if ((y1.get(i) * y2.get(i)) < 0) {
+                        x0.add(x2.get(i));
+                        x1.add(x1.get(i));
+                    } else {
+                        x0.add(x0.get(i));
+                        x1.add(x2.get(i));
+                    }
+
+                    roots.add(x2.get(i));
+                }
+                break;
+            case "TOL":
+                int i = 0;
+                while (Math.abs(x1.get(i) - x0.get(i)) > stopVal) {
+                    y0.add(fOfX(polynomial, x0.get(i)));
+                    y1.add(fOfX(polynomial, x1.get(i)));
+
+                    x2.add(((x0.get(i) * y1.get(i)) - (x1.get(i) * y0.get(i))) / (y1.get(i) - y0.get(i)));
+                    y2.add(fOfX(polynomial, x2.get(i)));
+                    if (i == 0) {
+                        regulaError.add(0.0);
+                    } else {
+                        double error = (x2.get(i - 1) - x2.get(i)) / x2.get(i);
+                        regulaError.add(Math.abs(error));
+                    }
+
+                    if (y2.get(i) == 0) {
+                        break;
+                    }
+
+                    if ((y1.get(i) * y2.get(i)) < 0) {
+                        x0.add(x2.get(i));
+                        x1.add(x1.get(i));
+                    } else {
+                        x0.add(x0.get(i));
+                        x1.add(x2.get(i));
+                    }
+                    roots.add(x2.get(i));
+                    i++;
+                }
+                break;
+        }
+    }
+
+	//Secant
+    public void solveSecant(ArrayList<Double> polynomial, ArrayList<Double> points, double stopVal, String type) {
+        clearSecant();
+
+        //initialize points to be used
+        xValues.add(points.get(0));
+        xValues.add(points.get(1));
+        yValues.add(fOfX(polynomial, xValues.get(0)));
+        yValues.add(fOfX(polynomial, xValues.get(1)));
+
+        double nextPoint = 0.0;
+        switch (type) {
+            case "Iteration":
+                for (int i = 1; i < stopVal + 1; i++) {
+                    nextPoint = xValues.get(i) - ((fOfX(polynomial, xValues.get(i)) * (xValues.get(i - 1) - xValues.get(i))) / (fOfX(polynomial, xValues.get(i - 1)) - fOfX(polynomial, xValues.get(i))));
+                    xValues.add(nextPoint);
+                    yValues.add(fOfX(polynomial, xValues.get(i + 1)));
+                    if (i == 1) {
+                        secantError.add(0.0);
+                        secantError.add(0.0);
+                    } else {
+                        double error = (xValues.get(i + 1) - xValues.get(i)) / xValues.get(i + 1);
+                        secantError.add(Math.abs(error));
+                    }
+                }
+                break;
+            case "TOL":
+                int i = 1;
+                while (Math.abs(xValues.get(i) - xValues.get(i - 1)) > stopVal) {
+                    nextPoint = xValues.get(i) - ((fOfX(polynomial, xValues.get(i)) * (xValues.get(i - 1) - xValues.get(i))) / (fOfX(polynomial, xValues.get(i - 1)) - fOfX(polynomial, xValues.get(i))));
+                    xValues.add(nextPoint);
+                    yValues.add(fOfX(polynomial, xValues.get(i + 1)));
+                    if (i == 1) {
+                        secantError.add(0.0);
+                        secantError.add(0.0);
+                    } else {
+                        double error = (xValues.get(i + 1) - xValues.get(i)) / xValues.get(i + 1);
+                        secantError.add(Math.abs(error));
+                    }
+                    i++;
+                }
+
                 break;
 
         }
