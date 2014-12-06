@@ -177,7 +177,7 @@ public class Calculations {
                     if (i == 0) {
                         bisectionError.add(0.0);
                     } else {
-                        double error = (x2.get(i - 1) - x2.get(i)) / x2.get(i);
+                        double error = (x1.get(i) - x0.get(i)) / 2;
                         bisectionError.add(Math.abs(error));
                     }
                     
@@ -193,7 +193,7 @@ public class Calculations {
 						x1.add(x2.get(i));
 						y1.add(y2.get(i));
 					}
-					else if (y2.get(i) = 0){ //or (bn-an)/2 < error
+					else if (y2.get(i) = 0){
 						i = stopVal;
 					}
 				
@@ -202,30 +202,36 @@ public class Calculations {
                 break;
             case "TOL":
                 int i = 0;
-                while (!(Math.abs((x1.get(i) - x0.get(i)) / 2) <= stopVal)) {
+                while (!(Math.abs(x1.get(i) - x0.get(i)) / 2) <= stopVal)) {
                     y0.add(fOfX(polynomial, x0.get(i)));
                     y1.add(fOfX(polynomial, x1.get(i)));
 
-                    x2.add(((x0.get(i) * y1.get(i)) - (x1.get(i) * y0.get(i))) / (y1.get(i) - y0.get(i)));
+                    x2.add((x0.get(i) + x1.get(i))/2);
                     y2.add(fOfX(polynomial, x2.get(i)));
+					
                     if (i == 0) {
                         bisectionError.add(0.0);
                     } else {
-                        double error = (x2.get(i - 1) - x2.get(i)) / x2.get(i);
+                        double error = (x1.get(i) - x0.get(i)) / 2;
                         bisectionError.add(Math.abs(error));
                     }
 
-                    if (y2.get(i) == 0) {
-                        break;
-                    }
-
-                    if ((y1.get(i) * y2.get(i)) < 0) {
-                        x0.add(x2.get(i));
-                        x1.add(x1.get(i));
-                    } else {
-                        x0.add(x0.get(i));
-                        x1.add(x2.get(i));
-                    }
+                    if(y2.get(i) < 0 && y0.get(i) < 0){
+						x0.add(x2.get(i));
+						y0.add(y2.get(i));
+						x1.add(x1.get(i));
+						y1.add(y1.get(i));
+					}
+					else if(y2.get(i) < 0 && y1.get(i) < 0){
+						x0.add(x0.get(i));
+						y0.add(y0.get(i));
+						x1.add(x2.get(i));
+						y1.add(y2.get(i));
+					}
+					else if (y2.get(i) = 0){
+						break;
+					}
+					
                     roots.add(x2.get(i));
                     i++;
                 }
