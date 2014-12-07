@@ -54,7 +54,10 @@ public class Controller {
                 plotSecant(iterationAt + 1);
 
             }
-
+            else if ("Bisection".equals(menuView.getCbMethod())){
+                plotPolynomial(model.getxValues());
+                plotBisection(iterationAt);
+            }
         }
     }
 
@@ -133,6 +136,18 @@ public class Controller {
                 plotBisection(0);
 
             }
+            else if ("Newton's".equals(menuView.getCbMethod())){
+                menuView.newtonsTableModel.setRowCount(0);
+                model.solveNewtons(menuView.getTxtPolynomial(), menuView.getNewtonsPoint(), menuView.getTxtStopValue(), menuView.getCbStopType());
+
+                //Display table results
+                for (int i = 0; i < model.getxValues().size() - 1; i++) {
+                    menuView.newtonsAddRow(i, model.getxValues().get(i), model.getyValues().get(i), model.getNewtonsError().get(i));
+                }
+
+                plotPolynomial(model.getxValues());
+                plotNewtons(1);
+            }
         }
     }
 
@@ -175,7 +190,11 @@ public class Controller {
     }
     
     public void plotNewtons(int index){
-        
+        XYSeries newtonsSeries = new XYSeries("Iteration: " + (index));
+        newtonsSeries.add(model.getxValues().get(index).doubleValue(), model.fOfX(menuView.getTxtPolynomial(), model.getxValues().get(index).doubleValue()));
+        newtonsSeries.add(model.getxValues().get(index - 1).doubleValue(), model.fOfX(menuView.getTxtPolynomial(), model.getxValues().get(index - 1).doubleValue()));
+        newtonsSeries.add(model.getxValues().get(index + 1).doubleValue(), 0);
+        graphView.numericalDataset.addSeries(newtonsSeries);
     }
 
 
@@ -186,5 +205,8 @@ public class Controller {
         else if ("Secant".equals(menuView.getCbMethod())){
             graphView.graphSlider.setMaximum(model.getxValues().size() - 4);
         }
+        else if ("Regula Falsi".equals(menuView.getCbMethod())) {
+            graphView.graphSlider.setMaximum(model.getX0().size() - 2);
+        } 
     }
 }

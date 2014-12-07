@@ -225,6 +225,7 @@ public class MainMenu extends javax.swing.JFrame {
         this.secantTableModel.addRow(new Object[]{iteration, x, y, error});
     }
 
+    //Bisection Table
     private String bisectionColNames[] = {"Iteration", "x0", "x1", "x2", "y0", "y1", "y2", "Error"};
     public DefaultTableModel bisectionTableModel = new DefaultTableModel(null, bisectionColNames);
     private JTable bisectionTable = new JTable(bisectionTableModel);
@@ -233,6 +234,7 @@ public class MainMenu extends javax.swing.JFrame {
         this.bisectionTableModel.addRow(new Object[]{iteration, x0, x1, x2, y0, y1, y2, error});
     }
 
+    //Newton's Table
     private String newtonsColNames[] = {"Iteration", "x", "f(x)", "Error"};
     public DefaultTableModel newtonsTableModel = new DefaultTableModel(null, newtonsColNames);
     private JTable newtonsTable = new JTable(newtonsTableModel);
@@ -287,6 +289,13 @@ public class MainMenu extends javax.swing.JFrame {
         points.add(Double.parseDouble(txtPoint2.getText()));
 
         return points;
+    }
+    
+    public ArrayList<Double> getNewtonsPoint() {
+        ArrayList<Double> point = new ArrayList<>();
+        point.add(Double.parseDouble(txtPoint1.getText()));
+
+        return point;
     }
 
     public ArrayList<Double> getTxtPolynomial() {
