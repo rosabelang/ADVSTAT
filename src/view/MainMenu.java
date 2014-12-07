@@ -1,3 +1,7 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package view;
 
 import java.awt.event.ActionListener;
@@ -5,6 +9,10 @@ import java.util.ArrayList;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ *
+ * @author Renz
+ */
 public class MainMenu extends javax.swing.JFrame {
 
     /**

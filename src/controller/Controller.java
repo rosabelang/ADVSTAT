@@ -1,3 +1,7 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package controller;
 
 import java.awt.event.ActionEvent;
@@ -11,6 +15,10 @@ import org.jfree.data.xy.XYSeries;
 import view.Graph;
 import view.MainMenu;
 
+/**
+ *
+ * @author Renz
+ */
 public class Controller {
 
     MainMenu menuView;
@@ -40,6 +48,7 @@ public class Controller {
             if ("Regula Falsi".equals(menuView.getCbMethod())) {
                 plotPolynomial(model.getRoots());
                 plotRegulaFalsi(iterationAt);
+                
             } 
             else if ("Secant".equals(menuView.getCbMethod())){
                 plotPolynomial(model.getxValues());
@@ -47,7 +56,7 @@ public class Controller {
 
             }
             else if ("Bisection".equals(menuView.getCbMethod())){
-                plotPolynomial(model.getxValues());
+                plotPolynomial(model.getRoots());
                 plotBisection(iterationAt);
             }
         }
@@ -123,7 +132,7 @@ public class Controller {
                 for (int i = 0; i < model.getX0().size() - 1; i++) {
                     menuView.bisectionAddRow(i + 1, model.getX0().get(i), model.getX1().get(i), model.getX2().get(i), model.getY0().get(i), model.getY1().get(i), model.getY2().get(i), model.getBisectionError().get(i));
                 }
-
+                
                 plotPolynomial(model.getRoots());
                 plotBisection(0);
 
@@ -197,7 +206,7 @@ public class Controller {
         else if ("Secant".equals(menuView.getCbMethod())){
             graphView.graphSlider.setMaximum(model.getxValues().size() - 4);
         }
-        else if ("Regula Falsi".equals(menuView.getCbMethod())) {
+        else if ("Bisection".equals(menuView.getCbMethod())) {
             graphView.graphSlider.setMaximum(model.getX0().size() - 2);
         } 
     }
