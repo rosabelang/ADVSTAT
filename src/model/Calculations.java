@@ -31,6 +31,7 @@ public class Calculations {
 
         return answer;
     }
+<<<<<<< HEAD
     
     public double fOfXPrime(ArrayList<Double> polynomial, double x) {
         ArrayList<Double> array = new ArrayList<>();
@@ -58,6 +59,8 @@ public class Calculations {
         double ans = fOfXPrime(array, x);
         return ans;
     }
+=======
+>>>>>>> parent of 3f5ddf2... Fixed Bisection TOL and graph and Regula Falsi TOL
 	
     //Bisection Method
     public void solveBisection(ArrayList<Double> polynomial, ArrayList<Double> interval, double stopVal, String type) {
@@ -88,6 +91,7 @@ public class Calculations {
                         bisectionError.add(Math.abs(error));
                     }
 
+<<<<<<< HEAD
                     //if a is neg, b is pos, c is neg
                     if(y0.get(i) < 0 && y1.get(i) > 0 && y2.get(i) < 0){
                         x0.add(x2.get(i));
@@ -113,11 +117,35 @@ public class Calculations {
 
                     roots.add(x2.get(i));
 
+=======
+					if(y2.get(i) < 0 && y0.get(i) < 0 || y2.get(i) > 0 && y0.get(i) > 0){
+						x0.add(x2.get(i));
+						y0.add(y2.get(i));
+						x1.add(x1.get(i));
+						y1.add(y1.get(i));
+					}
+					else if(y2.get(i) < 0 && y1.get(i) < 0 || y2.get(i) > 0 && y1.get(i) > 0){
+						x0.add(x0.get(i));
+						y0.add(y0.get(i));
+						x1.add(x2.get(i));
+						y1.add(y2.get(i));
+					}
+					else if (y2.get(i) == 0){
+						i = (int) stopVal + 1;
+					}
+				
+					roots.add(x2.get(i));
+
+>>>>>>> parent of 3f5ddf2... Fixed Bisection TOL and graph and Regula Falsi TOL
                 }
                 break;
             case "TOL":
                 int i = 0;
+<<<<<<< HEAD
                 while (Math.abs((x1.get(i) - x0.get(i)) / 2) > stopVal) {
+=======
+                while (Math.abs(x1.get(i) - x0.get(i)) / 2) > stopVal) {
+>>>>>>> parent of 3f5ddf2... Fixed Bisection TOL and graph and Regula Falsi TOL
                     y0.add(fOfX(polynomial, x0.get(i)));
                     y1.add(fOfX(polynomial, x1.get(i)));
 
@@ -129,6 +157,7 @@ public class Calculations {
                     } else {
                         double error = (x1.get(i) - x0.get(i)) / 2;
                         bisectionError.add(Math.abs(error));
+<<<<<<< HEAD
                     }
 					
 					//if a is neg, b is pos, c is neg
@@ -153,6 +182,25 @@ public class Calculations {
                     else if (y0.get(i) * y1.get(i) > 0){
                             System.out.println("Intervals must be of different signs.");
                     }
+=======
+                    }
+
+                    if(y2.get(i) < 0 && y0.get(i) < 0 || y2.get(i) > 0 && y0.get(i) > 0){
+						x0.add(x2.get(i));
+						y0.add(y2.get(i));
+						x1.add(x1.get(i));
+						y1.add(y1.get(i));
+					}
+					else if(y2.get(i) < 0 && y1.get(i) < 0 || y2.get(i) > 0 && y1.get(i) > 0){
+						x0.add(x0.get(i));
+						y0.add(y0.get(i));
+						x1.add(x2.get(i));
+						y1.add(y2.get(i));
+					}
+					else if (y2.get(i) == 0){
+						break;
+					}
+>>>>>>> parent of 3f5ddf2... Fixed Bisection TOL and graph and Regula Falsi TOL
 					
                     roots.add(x2.get(i));
                     i++;
@@ -164,6 +212,7 @@ public class Calculations {
 	//Newton's
     public void solveNewtons(ArrayList<Double> polynomial, ArrayList<Double> points, double stopVal, String type) {
         clearNewtons();
+<<<<<<< HEAD
         
         //initialize points to be used
         xValues.add(points.get(0));
@@ -175,6 +224,20 @@ public class Calculations {
                 for (int i = 1; i <= stopVal; i++) {
                     nextPoint = xValues.get(i-1) - (fOfX(polynomial, xValues.get(i-1)) / fOfXPrime(polynomial, xValues.get(i - 1)));
                     System.out.println(nextPoint);
+=======
+
+        //initialize points to be used
+        /*xValues.add(points.get(0));
+        xValues.add(points.get(1));
+        yValues.add(fOfX(polynomial, xValues.get(0)));
+        yValues.add(fOfX(polynomial, xValues.get(1)));
+        
+        double nextPoint = 0.0;*/
+        switch (type) {
+            case "Iteration":
+              /*  for (int i = 1; i < stopVal + 1; i++) {
+                    nextPoint = xValues.get(i) - ((fOfX(polynomial, xValues.get(i)) * (xValues.get(i - 1) - xValues.get(i))) / (fOfX(polynomial, xValues.get(i - 1)) - fOfX(polynomial, xValues.get(i))));
+>>>>>>> parent of 3f5ddf2... Fixed Bisection TOL and graph and Regula Falsi TOL
                     xValues.add(nextPoint);
                     yValues.add(fOfX(polynomial, xValues.get(i)));
                     
@@ -182,6 +245,7 @@ public class Calculations {
                         newtonsError.add(0.0);
                         newtonsError.add(0.0);
                     } else {
+<<<<<<< HEAD
                         double error = fOfX(polynomial, xValues.get(i)) * fOfXDoublePrime(polynomial, xValues.get(i)) / Math.pow(fOfXPrime(polynomial, xValues.get(i)), 2);
                         newtonsError.add(Math.abs(error));
                     }
@@ -197,16 +261,41 @@ public class Calculations {
                 int i = 1;
                 while (fOfX(polynomial, xValues.get(i)) * fOfXDoublePrime(polynomial, xValues.get(i)) / Math.pow(fOfXPrime(polynomial, xValues.get(i)), 2) > stopVal) {
                     nextPoint =  xValues.get(i-1) - (fOfX(polynomial, xValues.get(i-1)) / fOfXPrime(polynomial, xValues.get(i - 1)));
+=======
+                        double error = (xValues.get(i + 1) - xValues.get(i)) / xValues.get(i + 1);
+                        newtonsError.add(Math.abs(error));
+                    }
+                }*/
+                for(int i = 1; i < stopVal + 1; i++){
+                    xValues.add(1.5);
+                    yValues.add(2.3);
+                    newtonsError.add(0.0);
+                }
+                break;
+            case "TOL":
+                /*int i = 1;
+                while (!(Math.abs(xValues.get(i) - xValues.get(i - 1)) <= stopVal)) {
+                    nextPoint = xValues.get(i) - ((fOfX(polynomial, xValues.get(i)) * (xValues.get(i - 1) - xValues.get(i))) / (fOfX(polynomial, xValues.get(i - 1)) - fOfX(polynomial, xValues.get(i))));
+>>>>>>> parent of 3f5ddf2... Fixed Bisection TOL and graph and Regula Falsi TOL
                     xValues.add(nextPoint);
                     yValues.add(fOfX(polynomial, xValues.get(i + 1)));
                     if (i == 1) {
                         newtonsError.add(0.0);
                         newtonsError.add(0.0);
                     } else {
+<<<<<<< HEAD
                         double error = fOfX(polynomial, xValues.get(i)) * fOfXDoublePrime(polynomial, xValues.get(i)) / Math.pow(fOfXPrime(polynomial, xValues.get(i)), 2);
+=======
+                        double error = (xValues.get(i + 1) - xValues.get(i)) / xValues.get(i + 1);
+>>>>>>> parent of 3f5ddf2... Fixed Bisection TOL and graph and Regula Falsi TOL
                         newtonsError.add(Math.abs(error));
                     }
                     i++;
+                }*/
+                for(int i = 1; i < stopVal + 1; i++){
+                    xValues.add(1.5);
+                    yValues.add(2.3);
+                    newtonsError.add(0.0);
                 }
                 break;
 
