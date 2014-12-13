@@ -33,29 +33,29 @@ public class Calculations {
     }
     
     public double fOfXPrime(ArrayList<Double> polynomial, double x) {
-         ArrayList<Double> array = new ArrayList<>();
-         int i=0;
-             while (i < polynomial.size()) {
-                if((polynomial.get(i) * polynomial.get(i+1))!=0){
-                    array.add(polynomial.get(i) * polynomial.get(i+1));
-                    array.add(polynomial.get(i+1) - 1);
-                }
-                 i += 2;
-             }
+        ArrayList<Double> array = new ArrayList<>();
+        int i=0;
+        while (i < polynomial.size()) {
+           if((polynomial.get(i) * polynomial.get(i+1))!=0){
+               array.add(polynomial.get(i) * polynomial.get(i+1));
+               array.add(polynomial.get(i+1) - 1);
+           }
+            i += 2;
+        }
         return fOfX(array, x);
     }
 	
-	public double fOfXDoublePrime(ArrayList<Double> polynomial, double x) {
-         ArrayList<Double> array = new ArrayList<>();
-         int i=0;
-             while (i < polynomial.size()) {
-                if((polynomial.get(i) * polynomial.get(i+1))!=0){
-                    array.add(polynomial.get(i) * polynomial.get(i+1));
-                    array.add(polynomial.get(i+1) - 1);
-                }
-                 i += 2;
-             }
-		double ans = fOfXPrime(array, x);
+    public double fOfXDoublePrime(ArrayList<Double> polynomial, double x) {
+        ArrayList<Double> array = new ArrayList<>();
+        int i=0;
+        while (i < polynomial.size()) {
+            if((polynomial.get(i) * polynomial.get(i+1))!=0){
+                array.add(polynomial.get(i) * polynomial.get(i+1));
+                array.add(polynomial.get(i+1) - 1);
+            }
+            i += 2;
+        }
+        double ans = fOfXPrime(array, x);
         return ans;
     }
 	
@@ -95,21 +95,21 @@ public class Calculations {
                         x1.add(x1.get(i));
                         y1.add(y1.get(i));
                     }
-					//if a is pos, b is neg, c is neg
+                    //if a is pos, b is neg, c is neg
                     else if(y0.get(i) > 0 && y1.get(i) < 0 && y2.get(i) < 0){
                         x0.add(x0.get(i));
                         y0.add(y0.get(i));
                         x1.add(x2.get(i));
                         y1.add(y2.get(i));
                     }
-					//if c is 0
+                    //if c is 0
                     else if (y2.get(i) == 0){
                         i = (int) stopVal + 1;
                     }
-					//if a*b is pos
-					else if (y0.get(i) * y1.get(i) > 0){
-						print.ln("Intervals must be of different signs.")
-					}
+                    //if a*b is pos
+                    else if (y0.get(i) * y1.get(i) > 0){
+                            System.out.println("Intervals must be of different signs.");
+                    }
 
                     roots.add(x2.get(i));
 
@@ -145,14 +145,14 @@ public class Calculations {
                         x1.add(x2.get(i));
                         y1.add(y2.get(i));
                     }
-					//if c is 0
+                    //if c is 0
                     else if (y2.get(i) == 0){
                         break;
                     }
-					//if a*b is pos
-					else if (y0.get(i) * y1.get(i) > 0){
-						print.ln("Intervals must be of different signs.")
-					}
+                    //if a*b is pos
+                    else if (y0.get(i) * y1.get(i) > 0){
+                            System.out.println("Intervals must be of different signs.");
+                    }
 					
                     roots.add(x2.get(i));
                     i++;
@@ -173,21 +173,29 @@ public class Calculations {
         switch (type) {
             case "Iteration":
                 for (int i = 1; i <= stopVal; i++) {
-					nextPoint = xValues.get(i-1) - (fOfX(polynomial, xValues.get(i-1)) / fOfXPrime(polynomial, xValues.get(i - 1)));
-					System.out.println(nextPoint);
-					xValues.add(nextPoint);
-					Values.add(fOfX(polynomial, xValues.get(i)));
-					
-					//if error is 0
+                    nextPoint = xValues.get(i-1) - (fOfX(polynomial, xValues.get(i-1)) / fOfXPrime(polynomial, xValues.get(i - 1)));
+                    System.out.println(nextPoint);
+                    xValues.add(nextPoint);
+                    yValues.add(fOfX(polynomial, xValues.get(i)));
+                    
+                    if (i == 1) {
+                        newtonsError.add(0.0);
+                        newtonsError.add(0.0);
+                    } else {
+                        double error = fOfX(polynomial, xValues.get(i)) * fOfXDoublePrime(polynomial, xValues.get(i)) / Math.pow(fOfXPrime(polynomial, xValues.get(i)), 2);
+                        newtonsError.add(Math.abs(error));
+                    }
+                    
+                    //if error is 0
                     if (fOfX(polynomial, xValues.get(i)) * fOfXDoublePrime(polynomial, xValues.get(i)) / Math.pow(fOfXPrime(polynomial, xValues.get(i)), 2) == 0){
                         i = (int) stopVal + 1;
                     }
-				}
+		}
                
                 break;
             case "TOL":
                 int i = 1;
-                while (fOfX(polynomial, xValues.get(i)) * fOfXDoublePrime(polynomial, xValues.get(i)) / Math.pow(fOfXPrime(polynomial, xValues.get(i)), 2) > stopVal)) {
+                while (fOfX(polynomial, xValues.get(i)) * fOfXDoublePrime(polynomial, xValues.get(i)) / Math.pow(fOfXPrime(polynomial, xValues.get(i)), 2) > stopVal) {
                     nextPoint =  xValues.get(i-1) - (fOfX(polynomial, xValues.get(i-1)) / fOfXPrime(polynomial, xValues.get(i - 1)));
                     xValues.add(nextPoint);
                     yValues.add(fOfX(polynomial, xValues.get(i + 1)));
